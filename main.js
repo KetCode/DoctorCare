@@ -4,6 +4,11 @@ onScroll()
 function onScroll() {
     showNavOnScroll();
     showBackToTopButtonOnScroll()
+
+    activateMenuAtCurrentSection(home)
+    activateMenuAtCurrentSection(services)
+    activateMenuAtCurrentSection(about)
+    activateMenuAtCurrentSection(contact)
 }
 
 function showNavOnScroll() {
@@ -19,6 +24,30 @@ function showBackToTopButtonOnScroll() {
         backToTopButton.classList.add('show')
     } else {
         backToTopButton.classList.remove('show')
+    }
+}
+
+function activateMenuAtCurrentSection(section) {
+    const targetLine = scrollY + innerHeight / 2
+
+    // verifica se a seção passou da linha
+    const sectionTop = section.offsetTop
+    const sectionHeight = section.offsetHeight
+    const sectionTopReachOrPassedTargetLine = targetLine >= sectionTop
+
+    // verifica se a base está abaixo da linha alvo
+    const sectionEndsAt = sectionTop + sectionHeight
+    const sectionEndsPassedTargetLine = sectionEndsAt <= targetLine
+
+    // limites da seção
+    const sectionBoundaries = sectionTopReachOrPassedTargetLine && !sectionEndsPassedTargetLine
+
+    const sectionId = section.getAttribute('id')
+    const menuElement = document.querySelector(`.menu a[href*=${sectionId}]`)
+
+    menuElement.classList.remove('active')
+    if (sectionBoundaries) {
+        menuElement.classList.add('active')
     }
 }
 
